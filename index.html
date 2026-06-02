@@ -773,6 +773,21 @@ function toggleCat(id){
   render();
 }
 
+
+function renderTagFilters(){
+  var el=document.getElementById('tag-filters');
+  if(!el)return;
+  el.innerHTML='<button class="tag-btn'+(activeTag==='tutti'?' active':'')+'" onclick="filterTag(\'tutti\')">tutti</button>'+
+    CATS.map(function(c){
+            return'<button class="tag-btn'+(activeTag===c.id?' active':'')+'" onclick="filterTag(\''+c.id+'\')">'+c.icon+' '+c.label+'</button>';
+    }).join('');
+}
+
+function filterTag(tag){
+  activeTag=tag;
+  render();
+}
+
 function render(){
   const q=(document.getElementById('search').value||'').toLowerCase().trim();
   const sel=document.getElementById('f-cat');
