@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✦ il mio archivio ✦</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#17120e;--bg2:#1f1812;--bg3:#2a2018;--bg4:#342820;
+  --ink:#e8dcc8;--ink2:#c8b898;--ink3:#8a7860;--ink4:#5a4a38;
+  --gold:#c4903a;--gold2:#a07030;--border:#3a2e20;--border2:#4a3e2a;
+}
+body{background:var(--bg);color:var(--ink);font-family:'Nunito',sans-serif;min-height:100vh;padding:0 0 4rem}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.4}
+.wrap{max-width:860px;margin:0 auto;padding:0 1.75rem;position:relative;z-index:1}
+
+/* HEADER */
+header{text-align:center;padding:3.5rem 0 2.5rem;border-bottom:1px solid var(--border)}
+.header-ornament{font-family:'IM Fell English',serif;font-size:14px;color:var(--ink4);letter-spacing:4px;margin-bottom:1rem;font-style:italic}
+h1{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:500;color:var(--ink);letter-spacing:2px;line-height:1.1;margin-bottom:.5rem}
+h1 em{font-style:italic;color:var(--gold)}
+.header-sub{font-family:'IM Fell English',serif;font-size:15px;color:var(--ink3);font-style:italic;letter-spacing:1px;margin-top:.75rem}
+.header-rule{display:flex;align-items:center;gap:1rem;margin:1.5rem 0 0;color:var(--ink4);font-size:13px;letter-spacing:3px}
+.header-rule::before,.header-rule::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent)}
+
+/* SEARCH */
+.search-wrap{padding:1.75rem 0 .75rem}
+.search-inner{position:relative}
+.search-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--ink4);font-size:16px;pointer-events:none}
+#search{width:100%;font-family:'Nunito',sans-serif;font-size:15px;padding:12px 16px 12px 42px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--ink);outline:none;transition:border-color .2s}
+#search::placeholder{color:var(--ink4);font-style:italic}
+#search:focus{border-color:var(--gold2)}
+#search-count{font-size:12px;color:var(--ink4);margin-top:7px;font-style:italic;padding-left:2px;min-height:18px}
+
+/* TAG FILTERS */
+.tag-filters{display:flex;flex-wrap:wrap;gap:7px;padding:.75rem 0 1.25rem;border-bottom:1px solid var(--border);margin-bottom:1.25rem}
+.tag-btn{font-family:'Nunito',sans-serif;font-size:12px;font-weight:600;padding:5px 13px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--ink4);cursor:pointer;transition:all .15s;letter-spacing:.3px}
+.tag-btn:hover{border-color:var(--border2);color:var(--ink2)}
+.tag-btn.active{background:var(--bg3);border-color:var(--gold2);color:var(--gold)}
+
+/* ACCORDION */
+.acc{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:9px;background:var(--bg2);transition:border-color .2s}
+.acc:hover{border-color:var(--border2)}
+.acc-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;gap:14px}
+.acc-head:hover{background:var(--bg3)}
+.acc-left{display:flex;align-items:center;gap:12px;min-width:0}
+.acc-icon{font-size:17px;flex-shrink:0;width:24px;text-align:center}
+.acc-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:var(--ink)}
+.acc-sub{font-size:12px;color:var(--ink4);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.acc-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.acc-count{font-size:11px;color:var(--ink4);border:1px solid var(--border);padding:2px 9px;border-radius:10px;font-family:'Nunito',sans-serif}
+.acc-chevron{color:var(--ink4);font-size:11px;transition:transform .25s}
+.acc-chevron.open{transform:rotate(180deg)}
+.acc-body{display:none;border-top:1px solid var(--border);background:var(--bg)}
+.acc-body.open{display:block}
+
+/* SITE LIST */
+.site-list{padding:6px 0}
+.site-row{display:flex;align-items:flex-start;gap:12px;padding:10px 18px;border-bottom:1px solid var(--border);transition:background .12s}
+.site-row:last-child{border-bottom:none}
+.site-row:hover{background:var(--bg2)}
+.site-fav{width:18px;height:18px;border-radius:3px;flex-shrink:0;margin-top:2px;opacity:.85}
+.site-info{flex:1;min-width:0}
+.site-title{font-size:15px;font-weight:700;color:var(--ink);text-decoration:none;display:block;line-height:1.3;margin-bottom:3px}
+.site-title:hover{color:var(--gold)}
+.site-domain{font-size:11px;color:var(--ink4);margin-bottom:4px;display:block}
+.site-desc{font-size:13px;color:var(--ink3);line-height:1.55}
+.site-remove{flex-shrink:0;background:transparent;border:1px solid transparent;border-radius:6px;color:var(--ink4);font-size:14px;cursor:pointer;padding:4px 7px;transition:all .15s;margin-top:1px;line-height:1}
+.site-remove:hover{border-color:#8b2020;color:#e05050;background:rgba(139,32,32,.15)}
+.site-star{flex-shrink:0;background:transparent;border:1px solid transparent;border-radius:6px;font-size:14px;cursor:pointer;padding:4px 7px;transition:all .15s;margin-top:1px;line-height:1;color:var(--ink4)}
+.site-star:hover{border-color:var(--gold2);color:var(--gold);background:rgba(196,144,58,.08)}
+.site-star.starred{color:var(--gold);border-color:transparent}
+.site-star.starred:hover{border-color:#8b2020;color:#e05050;background:rgba(139,32,32,.08)}
+
+/* PREFERITI ACCORDION */
+.acc.fav-acc{border-color:var(--gold2);background:var(--bg2)}
+.acc.fav-acc .acc-title{color:var(--gold)}
+.acc.fav-acc .acc-chevron{color:var(--gold2)}
+.fav-empty{padding:14px 18px;font-family:'IM Fell English',serif;font-size:13px;color:var(--ink4);font-style:italic}
+
+/* SEARCH RESULTS */
+.results-wrap{padding:.5rem 0}
+
+/* ADD FORM */
+.add-section{margin-top:2rem;border-top:1px solid var(--border);padding-top:1.5rem}
+.add-toggle{width:100%;font-family:'Cormorant Garamond',serif;font-size:16px;padding:11px;background:transparent;border:1px dashed var(--border);border-radius:8px;color:var(--ink4);cursor:pointer;letter-spacing:.5px;transition:all .2s;font-style:italic}
+.add-toggle:hover{border-color:var(--gold2);color:var(--ink2)}
+.add-panel{display:none;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px;margin-top:11px}
+.add-panel.open{display:block}
+.add-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px}
+.add-panel input,.add-panel select{font-family:'Nunito',sans-serif;font-size:14px;padding:9px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--ink);width:100%;outline:none}
+.add-panel input::placeholder{color:var(--ink4);font-style:italic}
+.add-panel input:focus,.add-panel select:focus{border-color:var(--gold2)}
+.add-panel select option{background:var(--bg)}
+.add-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:4px}
+.btn-cancel{font-family:'Nunito',sans-serif;font-size:13px;padding:7px 15px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--ink4);cursor:pointer}
+.btn-save{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;padding:7px 18px;border-radius:6px;border:1px solid var(--gold2);background:transparent;color:var(--gold);cursor:pointer;font-style:italic;letter-spacing:.5px;transition:all .2s}
+.btn-save:hover{background:var(--bg3)}
+
+footer{text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+footer p{font-family:'IM Fell English',serif;font-size:13px;color:var(--ink4);font-style:italic;letter-spacing:1px}
+
+@media(max-width:600px){
+  h1{font-size:34px}
+  .acc-sub{display:none}
+  .add-grid{grid-template-columns:1fr}
+  .site-desc{font-size:12px}
+}
+/* MODALE CONFERMA */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:24px 28px;max-width:340px;width:90%;text-align:center;transform:translateY(8px);transition:transform .2s}
+.modal-overlay.open .modal-box{transform:translateY(0)}
+.modal-msg{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--ink);margin-bottom:20px;line-height:1.4}
+.modal-actions{display:flex;gap:10px;justify-content:center}
+.modal-cancel{font-family:'Nunito',sans-serif;font-size:13px;padding:8px 18px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--ink4);cursor:pointer;transition:all .15s}
+.modal-cancel:hover{border-color:var(--border2);color:var(--ink2)}
+.modal-confirm{font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:8px 18px;border-radius:6px;border:1px solid #8b2020;background:rgba(139,32,32,.15);color:#e05050;cursor:pointer;transition:all .15s}
+.modal-confirm:hover{background:rgba(139,32,32,.3)}
+
+
+/* SYNC STATUS */
+.sync-status{position:fixed;bottom:1.2rem;right:1.5rem;font-family:'Nunito',sans-serif;font-size:12px;padding:6px 12px;border-radius:20px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:50}
+.sync-status.loading{opacity:1;background:var(--bg3);border:1px solid var(--border2);color:var(--ink3)}
+.sync-status.ok{opacity:1;background:rgba(60,120,60,.2);border:1px solid rgba(60,120,60,.4);color:#7ec87e}
+.sync-status.error{opacity:1;background:rgba(139,32,32,.2);border:1px solid rgba(139,32,32,.4);color:#e05050}
+
+/* TOKEN PANEL */
+.token-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.token-overlay.open{opacity:1;pointer-events:all}
+.token-box{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:28px 32px;max-width:420px;width:92%}
+.token-title{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);margin-bottom:6px}
+.token-sub{font-family:'Nunito',sans-serif;font-size:13px;color:var(--ink3);margin-bottom:18px;line-height:1.5}
+.token-input{width:100%;font-family:'Nunito',sans-serif;font-size:13px;padding:10px 12px;background:var(--bg);border:1px solid var(--border2);border-radius:6px;color:var(--ink);outline:none;margin-bottom:14px}
+.token-input:focus{border-color:var(--gold2)}
+.token-actions{display:flex;gap:10px;justify-content:flex-end}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="header-ornament">— catalogus rerum mirabilium —</div>
+  <h1>il mio <em>archivio</em></h1>
+  <p class="header-sub">una raccolta di curiosità, strumenti e meraviglie trovate nel web</p>
+  <div class="header-rule">✦ ✦ ✦</div>
+</header>
+<div class="search-wrap">
+  <div class="search-inner">
+    <span class="search-icon">⌕</span>
+    <input type="text" id="search" placeholder="cerca nell'archivio…" oninput="render()">
+  </div>
+  <div id="search-count"></div>
+</div>
+<div class="tag-filters" id="tag-filters"></div>
+<div class="acc-list" id="acc-list"></div>
+<div class="add-section">
+  <button class="add-toggle" onclick="toggleAdd()">✎  aggiungi un nuovo reperto</button>
+  <div class="add-panel" id="add-panel">
+    <div class="add-grid">
+      <input id="f-url" placeholder="URL" type="url">
+      <input id="f-title" placeholder="Titolo">
+      <input id="f-desc" placeholder="Descrizione breve">
+      <select id="f-cat"><option value="">Categoria…</option></select>
+    </div>
+    <div class="add-actions">
+      <button class="btn-cancel" onclick="toggleAdd()">annulla</button>
+      <button class="btn-save" onclick="addSite()">archivia ✦</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-msg" id="modal-msg"></div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="modalClose()">annulla</button>
+      <button class="modal-confirm" onclick="modalConfirm()">rimuovi</button>
+    </div>
+  </div>
+</div>
+
+<div id="sync-status" class="sync-status"></div>
+
+<div class="token-overlay" id="token-overlay">
+  <div class="token-box">
+    <div class="token-title">✦ configura accesso</div>
+    <div class="token-sub">Incolla il tuo GitHub token per salvare le modifiche. Viene conservato solo su questo dispositivo.</div>
+    <input type="password" id="token-input" class="token-input" placeholder="ghp_...">
+    <div class="token-actions">
+      <button class="modal-cancel" onclick="closeTokenPanel()">annulla</button>
+      <button class="btn-save" onclick="saveToken()">salva token</button>
+    </div>
+  </div>
+</div>
+<footer><p>"Not all those who wander are lost" · nemmeno quelli che navigano senza meta</p></footer>
+</div>
+<script>
+const CATS=[
+  {id:'tana',    icon:'🕳',  label:'tana del coniglio',          sub:'ci entri e perdi un\'ora'},
+  {id:'inutili', icon:'🪄',  label:'inutili ma ci passerei le ore',sub:'non servono a nulla, però…'},
+  {id:'nowukno', icon:'📜',  label:'now you kno',                 sub:'strano, interessante, random'},
+  {id:'scoperte',icon:'🔭',  label:'scoperte & curiosità',        sub:'cose che non sapevi esistessero'},
+  {id:'utili',   icon:'⚗️',  label:'strumenti pratici',           sub:'veloci, utili, one-shot'},
+  {id:'design',  icon:'🖋',  label:'design & visual',             sub:'tools, font, colori, mockup, ispirazione'},
+  {id:'studio',  icon:'📖',  label:'studio & ricerca',            sub:'per imparare con serietà'},
+  {id:'codice',  icon:'⌨',  label:'programmazione',              sub:'imparare a scrivere codice'},
+  {id:'media',   icon:'🎞',  label:'media & intrattenimento',     sub:'film, serie, nostalgia'},
+  {id:'musica',  icon:'♪',   label:'musica & strumenti',          sub:'trovare, imparare, suonare'},
+  {id:'giochi',  icon:'🎲',  label:'giochini',                    sub:'piccoli giochi browser'},
+  {id:'lingue',  icon:'🗺',  label:'lingue',                      sub:'imparare nuove lingue'},
+  {id:'lavoro',  icon:'✉',   label:'lavoro & carriera',           sub:'trovare lavoro, crescere'},
+  {id:'benessere',icon:'🌿', label:'benessere',                   sub:'salute, fitness, sonno, mente'},
+  {id:'viaggi',  icon:'🧭',  label:'viaggi',                      sub:'pianificare, volare, dormire'},
+  {id:'casa',    icon:'🏛',  label:'casa & vita',                 sub:'interior, cucina, spese'},
+  {id:'social',  icon:'🕊',  label:'relazioni & social skills',   sub:'comunicare meglio'},
+  {id:'genealogia',icon:'📿',label:'genealogia',                  sub:'radici e storia di famiglia'},
+  {id:'estensioni',icon:'🧩',label:'estensioni Chrome',            sub:'per rendere il browser migliore'},
+  {id:'app',       icon:'📱',label:'app mobile',                   sub:'iOS e Android preferite'},
+  {id:'ambient',   icon:'🕯', label:'ambient & lofi',              sub:'suoni, musica, studio'},
+  {id:'psico',     icon:'🪞', label:'psicologia & mente',          sub:'capirsi un po\' di più'},
+];
+
+const SEED_SITES=[
+  // TANA DEL CONIGLIO
+  {url:'https://koalastothemax.com/',title:'Koalas to the Max',desc:'scorri sui puntini e appare un koala. non si spiega, si vive.',cat:'tana'},
+  {url:'https://fallingfalling.com/',title:'Falling Falling',desc:'una caduta infinita. stranamente rilassante.',cat:'tana'},
+  {url:'https://www.windows93.net/',title:'Windows 93',desc:'un sistema operativo fake più interessante di quello vero.',cat:'tana'},
+  {url:'https://www.garfieldminusgarfield.net/',title:'Garfield Minus Garfield',desc:'il fumetto senza Garfield. Jon risulta profondamente esistenzialista.',cat:'tana'},
+  {url:'https://pudding.cool/',title:'Pudding',desc:'giornalismo dati bellissimo. ti dice anche quanto è terribile il tuo Spotify.',cat:'tana'},
+  {url:'https://www.geoguessr.com/',title:'GeoGuessr',desc:'ti butta in un posto a caso nel mondo e devi capire dove sei.',cat:'tana'},
+  {url:'https://en.akinator.com/',title:'Akinator',desc:'pensa a un personaggio. lui lo indovina. sempre.',cat:'tana'},
+  {url:'https://www.stumbleupon.com/',title:'StumbleUpon',desc:'la tana delle tane: siti random in base ai tuoi interessi.',cat:'tana'},
+  {url:'https://answersocrates.com/',title:'Answer Socrates',desc:'le cose più cercate su Google per paese. un portale sull\'umanità.',cat:'tana'},
+  {url:'https://www.whatdoestheinternetthink.net/',title:'What Does the Internet Think',desc:'scrivi qualsiasi cosa e vedi se internet è a favore o contro.',cat:'tana'},
+  {url:'https://theuselessweb.com/',title:'The Useless Web',desc:'clicchi e ti rimanda a un sito inutile diverso ogni volta.',cat:'tana'},
+  {url:'https://www.mentalfloss.com/',title:'Mental Floss',desc:'una manna dal cielo, aneddoti di ogni tipo.',cat:'tana'},
+  {url:'https://chrismckenzie.com/',title:'Chris McKenzie',desc:'un esserino rosa carino segue il tuo mouse. completamente inutile ma.',cat:'tana'},
+  {url:'https://www.takeafive.com/?done',title:'Take a Five',desc:'scegli un minutaggio, vai a vedere qualche sito; finito il tempo la pagina esplode.',cat:'tana'},
+  {url:'https://www.rrrgggbbb.com/',title:'rrrgggbbb',desc:'totalmente inutile. a volte è quello che serve.',cat:'tana'},
+  {url:'https://smashthewalls.com/',title:'Smash the Walls',desc:'per distruggere un muro virtuale.',cat:'tana'},
+  {url:'https://paveldogreat.github.io/WebGL-Fluid-Simulation/',title:'Fluid Simulation',desc:'puoi creare fluidi colorati nel browser. ipnotico.',cat:'tana'},
+
+  // INUTILI
+  {url:'https://pointerpointer.com/',title:'Pointer Pointer',desc:'punta il mouse e qualcuno in una foto lo indica. sempre.',cat:'inutili'},
+  {url:'https://corgiorgy.com/',title:'Corgi Orgy',desc:'corgi che corrono. nient\'altro.',cat:'inutili'},
+  {url:'https://thenicestplace.net/',title:'The Nicest Place',desc:'abbracci virtuali da sconosciuti. funziona davvero.',cat:'inutili'},
+  {url:'https://bigassmessage.com/',title:'Big Ass Message',desc:'messaggio enorme via link. utilità zero, soddisfazione massima.',cat:'inutili'},
+  {url:'https://www.donothingfor2minutes.com/',title:'Do Nothing for 2 Minutes',desc:'stai fermo senza toccare nulla. più difficile di quanto sembri.',cat:'inutili'},
+  {url:'https://slipsum.com/',title:'Slipsum',desc:'lorem ipsum scritto come Samuel L. Jackson.',cat:'inutili'},
+  {url:'http://www.fliptext.org/',title:'Flip Text',desc:'scrive il testo capovolto.',cat:'inutili'},
+  {url:'https://thisissand.com/',title:'This is Sand',desc:'fai cadere sabbia colorata. stranamente meditativo.',cat:'inutili'},
+  {url:'https://algorat.club/',title:'Algorat',desc:'fai fare delle cose a dei ratti. non si spiega oltre.',cat:'inutili'},
+  {url:'https://www.spacejam.com/1996/',title:'Space Jam 1996',desc:'il sito originale del 1996. non è cambiato nulla.',cat:'inutili'},
+  {url:'https://www.mypetreplica.com/',title:'My Pet Replica',desc:'mandi la foto del cane, ricevi un peluche identico.',cat:'inutili'},
+  {url:'https://kappamon.com/',title:'Kappamon',desc:'animaletti carini sulla tua stream Twitch.',cat:'inutili'},
+  {url:'https://color.method.ac/',title:'Color Method',desc:'quanto sei brava a riconoscere i colori?',cat:'inutili'},
+  {url:'https://www.drunkronswanson.net/',title:'Drunk Ron Swanson',desc:'ron swanson ubriaco che dice cose.',cat:'inutili'},
+  {url:'https://lofigirl.com/generator/',title:'Lofi Girl Generator',desc:'per creare la tua ragazza lofi.',cat:'inutili'},
+  {url:'https://www.blobmaker.app/',title:'Blobmaker',desc:'per fare blob. onestamente non ho capito a cosa serva.',cat:'inutili'},
+  {url:'https://paint.toys/',title:'Paint Toys',desc:'super carino, disegna e dai libero sfogo al tuo estro creativo.',cat:'inutili'},
+  {url:'https://maze.toys/',title:'Maze Toys',desc:'labirinti per passare il tempo.',cat:'inutili'},
+  {url:'https://checkbox.toys/',title:'Checkbox Toys',desc:'ottimo per i riflessi.',cat:'inutili'},
+  {url:'https://optical.toys/',title:'Optical Toys',desc:'illusioni ottiche, ottime se vuoi perdere la vista.',cat:'inutili'},
+  {url:'https://thezen.zone/',title:'The Zen Zone',desc:'giochini che aiutano la meditazione.',cat:'inutili'},
+  {url:'https://plink.in/',title:'Plink',desc:'bellissimo per suonare da soli o in compagnia.',cat:'inutili'},
+
+  // NOW YOU KNO
+  {url:'https://www.gizoogle.net/',title:'Gizoogle',desc:'Google come lo gestirebbe Snoop Dogg.',cat:'nowukno'},
+  {url:'https://hackertyper.com/',title:'Hacker Typer',desc:'premi tasti a caso e sembri un hacker dei film.',cat:'nowukno'},
+  {url:'https://www.cleverbot.com/',title:'Cleverbot',desc:'conversazioni assurde con un AI degli anni 2000.',cat:'nowukno'},
+  {url:'http://www.stripcreator.com/',title:'Strip Creator',desc:'crea fumetti con personaggi già pronti.',cat:'nowukno'},
+  {url:'https://www.caffeineinformer.com/',title:'Caffeine Informer',desc:'quanta caffeina stai assumendo? quanta basterebbe ad ucciderti?',cat:'nowukno'},
+  {url:'https://whatthefuckshouldimakefordinner.com/',title:'WTF Should I Make',desc:'consigli su cosa cucinare, con stile.',cat:'nowukno'},
+  {url:'https://pastebin.com/',title:'Pastebin',desc:'condividi testo o codice con un link. anche per simulare programmazione.',cat:'nowukno'},
+  {url:'https://ronwinter.tv/drums.html',title:'Virtual Drums',desc:'suona la batteria virtuale di Ron Winter.',cat:'nowukno'},
+  {url:'https://www.drinkify.org/',title:'Drinkify',desc:'cosa dovresti bere in base a quello che ascolti.',cat:'nowukno'},
+  {url:'https://www.eyes.nasa.gov/',title:'Eyes on the Solar System',desc:'sito della NASA dove puoi vedere cose, molto interessante.',cat:'nowukno'},
+  {url:'https://www.nasa.gov/content/goddard/what-did-hubble-see-on-your-birthday',title:'Hubble Birthday',desc:'cosa ha trovato Hubble il giorno del tuo compleanno.',cat:'nowukno'},
+  {url:'https://www.wonderhowto.com/',title:'Wonder How To',desc:'sito carino dove puoi vedere come fare cose.',cat:'nowukno'},
+  {url:'https://uquiz.com/quiz/G0uNx4/how-would-you-dress-as-a-man-in-the-1950s',title:'1950s Style Quiz',desc:'quiz di personalità: come ti vestiresti negli anni \'50?',cat:'nowukno'},
+  {url:'https://www.cracked.com/',title:'Cracked',desc:'cose strane.',cat:'nowukno'},
+  {url:'https://www.theonion.com/',title:'The Onion',desc:'sito satirico.',cat:'nowukno'},
+  {url:'http://wherecoolthingshappen.blogspot.com/',title:'Where Cool Things Happen',desc:'cose cool.',cat:'nowukno'},
+  {url:'https://www.jamesedition.com/',title:'James Edition',desc:'lusso esagerato a cui aspirare.',cat:'nowukno'},
+
+  // SCOPERTE
+  {url:'https://www.instructables.com/',title:'Instructables',desc:'istruzioni per costruire, riparare, creare qualsiasi cosa.',cat:'scoperte'},
+  {url:'https://lifeat.io/',title:'Lifeat',desc:'ambienti virtuali con pomodoro e focus integrati.',cat:'scoperte'},
+  {url:'https://here.fm/',title:'Here.fm',desc:'stanze virtuali per ascoltare musica o vedere film con amici.',cat:'scoperte'},
+  {url:'https://www.authentichappiness.sas.upenn.edu/',title:'Authentic Happiness',desc:'questionario universitario per scoprire i tuoi punti di forza.',cat:'scoperte'},
+  {url:'https://dronestock.com/',title:'Drone Stock',desc:'filmati aerei di tutto il mondo fatti da droni.',cat:'scoperte'},
+  {url:'https://www.retailmenot.com/',title:'RetailMeNot',desc:'codici sconto e coupon per quasi tutti i negozi online.',cat:'scoperte'},
+  {url:'https://www.allrecipes.com/',title:'Allrecipes',desc:'ricette da tutto il mondo con recensioni vere.',cat:'scoperte'},
+  {url:'http://www.recipepuppy.com/',title:'Recipe Puppy',desc:'inserisci gli ingredienti che hai, lui ti dà una ricetta.',cat:'scoperte'},
+  {url:'https://myfridgefood.com/',title:'My Fridge Food',desc:'cosa cucinare con quello che hai in frigo.',cat:'scoperte'},
+  {url:'https://www.heritagetype.com/pages/free-vintage-illustrations',title:'Heritage Type',desc:'illustrazioni vintage gratuite bellissime.',cat:'scoperte'},
+  {url:'https://www.heavens-above.com/',title:'Heavens Above',desc:'segui satelliti e costellazioni in tempo reale.',cat:'scoperte'},
+  {url:'https://ptable.com/',title:'Ptable',desc:'tavola periodica interattiva.',cat:'scoperte'},
+  {url:'https://www.whatismyip.com/',title:'What is My IP',desc:'ti dice quale è il tuo indirizzo IP.',cat:'scoperte'},
+  {url:'https://simplynoise.com/',title:'Simply Noise',desc:'per sentire rumore bianco.',cat:'scoperte'},
+  {url:'https://www.charitynavigator.org/',title:'Charity Navigator',desc:'trova varie cose di beneficienza.',cat:'scoperte'},
+  {url:'https://www.radioreference.com/',title:'Radio Reference',desc:'ascoltare canali radio dalle varie nazioni.',cat:'scoperte'},
+  {url:'https://www.gsdm.com/avoid-humans-case-study/',title:'Avoid Humans',desc:'trova posti in pubblico che non sono affollati.',cat:'scoperte'},
+
+  // UTILI
+  {url:'https://bugmenot.com/',title:'BugMeNot',desc:'credenziali condivise per siti che obbligano alla registrazione.',cat:'utili'},
+  {url:'https://tineye.com/',title:'TinEye',desc:'ricerca immagini inversa precisa.',cat:'utili'},
+  {url:'https://privnote.co/',title:'Privnote',desc:'messaggi che si autodistruggono dopo essere stati letti.',cat:'utili'},
+  {url:'https://www.snopes.com/',title:'Snopes',desc:'fact-checking di notizie e leggende.',cat:'utili'},
+  {url:'http://scr.im/',title:'Scr.im',desc:'trasforma la tua email in un URL per evitare lo spam.',cat:'utili'},
+  {url:'https://www.iruler.net/',title:'iRuler',desc:'righello calibrato sulle dimensioni del tuo schermo.',cat:'utili'},
+  {url:'http://www.oldversion.com/',title:'Old Version',desc:'versioni vecchie di software quando quella nuova fa schifo.',cat:'utili'},
+  {url:'https://www.camelcamelcamel.com/',title:'CamelCamelCamel',desc:'storico prezzi Amazon. aspetta il momento giusto.',cat:'utili'},
+  {url:'https://www.shortreckonings.com/',title:'Short Reckonings',desc:'traccia le spese condivise tra amici.',cat:'utili'},
+  {url:'https://seatguru.com/',title:'SeatGuru',desc:'il posto migliore sull\'aereo prima di prenotare.',cat:'utili'},
+  {url:'https://www.wolframalpha.com/',title:'Wolfram Alpha',desc:'il motore di calcolo più potente del web.',cat:'utili'},
+  {url:'https://freecycle.org/',title:'Freecycle',desc:'dai via gratis cose che non usi.',cat:'utili'},
+  {url:'https://750words.com/',title:'750 Words',desc:'scrivi 750 parole ogni giorno. per le morning pages.',cat:'utili'},
+  {url:'https://www.vocaroo.com/',title:'Vocaroo',desc:'registra audio e condividi il link.',cat:'utili'},
+  {url:'https://darkreader.org/',title:'Dark Reader',desc:'dark mode per qualsiasi sito.',cat:'utili'},
+  {url:'https://www.manualslib.com/',title:'ManualsLib',desc:'il manuale di qualsiasi elettrodomestico mai prodotto.',cat:'utili'},
+  {url:'https://thistothat.com/',title:'This to That',desc:'come incollare X a Y? questo sito lo sa.',cat:'utili'},
+  {url:'https://copypastcharacter.com/',title:'Copy Paste Character',desc:'copia caratteri speciali, frecce, simboli.',cat:'utili'},
+  {url:'https://www.scribblemaps.com/',title:'Scribble Maps',desc:'disegna e annota su Google Maps.',cat:'utili'},
+  {url:'https://app.diagrams.net/',title:'Diagrams.net',desc:'diagrammi e mappe mentali, gratis.',cat:'utili'},
+  {url:'https://www.getnotify.com/',title:'GetNotify',desc:'ti avvisa quando qualcuno apre la tua email.',cat:'utili'},
+  {url:'https://gfycat.com/',title:'Gfycat',desc:'per fare upload di gif.',cat:'utili'},
+  {url:'https://ninite.com/',title:'Ninite',desc:'scarica tutti i software gratuiti che vuoi in una volta sola.',cat:'utili'},
+  {url:'https://squirt.io/',title:'Squirt',desc:'ti aiuta a leggere velocemente.',cat:'utili'},
+  {url:'http://readabilityscore.com/',title:'Readability Score',desc:'trova quanto un testo sia leggibile.',cat:'utili'},
+  {url:'http://www.jimmyr.com/',title:'Jimmyr',desc:'aggregatore di link.',cat:'utili'},
+  {url:'https://www.printfriendly.com/',title:'Print Friendly',desc:'rende le pagine web amichevoli per la stampa.',cat:'utili'},
+  {url:'https://www.spreeder.com/',title:'Spreeder',desc:'ti aiuta a leggere velocemente, 7 giorni di prova gratuita.',cat:'utili'},
+  {url:'https://www.dropbox.com/',title:'Dropbox',desc:'per fare backup di documenti sensibili online.',cat:'utili'},
+  {url:'https://www.gasbuddy.com/',title:'GasBuddy',desc:'trova prezzi della benzina locali.',cat:'utili'},
+  {url:'https://wikiryhmer.com/',title:'Wiki Rhymer',desc:'trova rime per qualsiasi parola.',cat:'utili'},
+  {url:'https://rhymer.com/',title:'Rhymer',desc:'dizionario ritmico online.',cat:'utili'},
+  {url:'https://z-library.it/',title:'Z-Library',desc:'per scaricare libri.',cat:'utili'},
+  {url:'https://www.detangle.ai/',title:'Detangle',desc:'riassumi qualsiasi cosa così puoi concentrarti su ciò che conta.',cat:'utili'},
+
+  // DESIGN
+  {url:'https://www.figma.com',title:'Figma',desc:'design collaborativo nel browser.',cat:'design'},
+  {url:'https://app.logo.com/',title:'Logo.com',desc:'genera loghi con AI.',cat:'design'},
+  {url:'https://www.iconfinder.com/',title:'Iconfinder',desc:'milioni di icone free e a pagamento.',cat:'design'},
+  {url:'https://fonts.google.com/',title:'Google Fonts',desc:'centinaia di font gratuiti.',cat:'design'},
+  {url:'https://www.dafont.com/',title:'DaFont',desc:'font decorativi e creativi gratuiti.',cat:'design'},
+  {url:'https://fontjoy.com/',title:'Fontjoy',desc:'abbinamenti di font con AI.',cat:'design'},
+  {url:'https://www.typewolf.com/',title:'Typewolf',desc:'font usati dai migliori siti.',cat:'design'},
+  {url:'https://wordmark.it/',title:'Wordmark',desc:'visualizza un testo in tutti i font del tuo PC.',cat:'design'},
+  {url:'https://www.fontinlogo.com/',title:'Font in Logo',desc:'scopri quale font usa il logo di un brand.',cat:'design'},
+  {url:'https://coolors.co/',title:'Coolors',desc:'genera palette di colori in un secondo.',cat:'design'},
+  {url:'https://colorhunt.co/',title:'Color Hunt',desc:'palette curate dalla community.',cat:'design'},
+  {url:'https://color.adobe.com/',title:'Adobe Color',desc:'ruota cromatica professionale.',cat:'design'},
+  {url:'https://brandcolors.net/',title:'Brand Colors',desc:'i colori esatti di tutti i brand famosi.',cat:'design'},
+  {url:'https://blush.design/',title:'Blush',desc:'illustrazioni personalizzabili e scaricabili.',cat:'design'},
+  {url:'https://creativemarket.com/',title:'Creative Market',desc:'font, template e risorse creative.',cat:'design'},
+  {url:'https://www.ls.graphics/',title:'LS Graphics',desc:'mockup gratuiti di qualità.',cat:'design'},
+  {url:'https://smartmockups.com/',title:'Smart Mockups',desc:'mockup online senza Photoshop.',cat:'design'},
+  {url:'https://rasterbator.net/',title:'Rasterbator',desc:'poster con effetto raster, gratuito.',cat:'design'},
+  {url:'https://jitter.video/',title:'Jitter',desc:'animazioni per loghi e interfacce.',cat:'design'},
+  {url:'https://readymag.com/',title:'Readymag',desc:'siti e pubblicazioni visivamente bellissime.',cat:'design'},
+  {url:'https://www.behance.net/',title:'Behance',desc:'portfolio e ispirazione per designer.',cat:'design'},
+  {url:'https://dribbble.com/',title:'Dribbble',desc:'community UI/UX.',cat:'design'},
+  {url:'https://savee.it/',title:'Savee',desc:'ispirazioni per designer.',cat:'design'},
+  {url:'https://www.toools.design/',title:'Toools Design',desc:'raccolta di siti di design.',cat:'design'},
+  {url:'https://tailwind.ink/',title:'Tailwind Ink',desc:'per creare palette di colori.',cat:'design'},
+  {url:'https://www.piskelapp.com/',title:'Piskel',desc:'editor grafica pixel art.',cat:'design'},
+  {url:'https://www.losttype.com/',title:'Lost Type',desc:'font belli.',cat:'design'},
+  {url:'https://www.sharptype.co/',title:'Sharp Type',desc:'font di qualità.',cat:'design'},
+  {url:'https://blazetype.eu/',title:'Blaze Type',desc:'font indipendenti.',cat:'design'},
+  {url:'https://goodtype.us/',title:'Good Type',desc:'font curati.',cat:'design'},
+  {url:'https://www.blockposters.com/',title:'Block Posters',desc:'stampa poster enormi in più fogli A4.',cat:'design'},
+  {url:'https://www.heritagetype.com/',title:'Heritage Type',desc:'illustrazioni vintage gratuite.',cat:'design'},
+  {url:'https://lordicon.com/',title:'Lordicon',desc:'icone animate per aggiungere a siti. anche per studiare concentrati.',cat:'design'},
+  {url:'https://csslayout.io/',title:'CSS Layout',desc:'scaricare codici CSS.',cat:'design'},
+  {url:'https://mixkit.co/',title:'Mixkit',desc:'per estrapolare video.',cat:'design'},
+  {url:'https://picrew.me/',title:'Picrew',desc:'creare avatar.',cat:'design'},
+  {url:'https://attentioninsight.com/',title:'Attention Insight',desc:'convalida i tuoi concetti con l\'analisi dell\'attenzione via AI.',cat:'design'},
+  {url:'https://powerpointschool.com/',title:'PowerPoint School',desc:'template carini e gratuiti per PowerPoint.',cat:'design'},
+
+  // STUDIO
+  {url:'https://www.scholarcy.com/',title:'Scholarcy',desc:'AI che riassume articoli scientifici.',cat:'studio'},
+  {url:'https://www.connectedpapers.com/',title:'Connected Papers',desc:'mappa visuale di articoli su un argomento.',cat:'studio'},
+  {url:'https://scite.ai/',title:'Scite',desc:'valuta come un paper è stato citato.',cat:'studio'},
+  {url:'https://www.semanticscholar.org/',title:'Semantic Scholar',desc:'motore di ricerca per letteratura scientifica.',cat:'studio'},
+  {url:'https://www.researchrabbit.ai/',title:'Research Rabbit',desc:'AI per trovare paper correlati.',cat:'studio'},
+  {url:'https://www.sciencedirect.com/',title:'Science Direct',desc:'articoli scientifici e medici peer-reviewed.',cat:'studio'},
+  {url:'https://www.biorender.com/',title:'BioRender',desc:'illustrazioni scientifiche per biologia.',cat:'studio'},
+  {url:'https://www.cymath.com/',title:'Cymath',desc:'risolve problemi di matematica con i passaggi.',cat:'studio'},
+  {url:'https://www.coursera.org/',title:'Coursera',desc:'corsi universitari online.',cat:'studio'},
+  {url:'https://readlang.com/',title:'Readlang',desc:'aiuta ad imparare le lingue con flashcard generate dal testo.',cat:'studio'},
+  {url:'https://www.studystream.live/',title:'StudyStream',desc:'ti mette in una stanza virtuale con altri ragazzi che studiano.',cat:'studio'},
+  {url:'https://wakelet.com/',title:'Wakelet',desc:'illustrazioni gratuite.',cat:'studio'},
+  {url:'https://hemingwayapp.com/',title:'Hemingway App',desc:'ti corregge e dà voti ai saggi.',cat:'studio'},
+  {url:'https://openknowledgemaps.org/',title:'Open Knowledge Maps',desc:'scegli un argomento e ti seleziona i 100 articoli più rilevanti.',cat:'studio'},
+  {url:'https://cheatography.com/',title:'Cheatography',desc:'cerchi un argomento e ti fa vedere un sacco di cose schematizzate, puoi anche scaricare i PDF.',cat:'studio'},
+  {url:'https://www.lucidchart.com/',title:'Lucidchart',desc:'per fare diagrammi o mappe concettuali.',cat:'studio'},
+  {url:'https://www.easybib.com/',title:'EasyBib',desc:'utile per citazioni o ti scannerizza il testo per vedere se lo hai plagiato.',cat:'studio'},
+  {url:'https://www.easynotecards.com/',title:'Easy Notecards',desc:'inserisci un libro e ti dà delle card con giochi sulle domande.',cat:'studio'},
+  {url:'https://www.physicsandmathstutor.com/',title:'Physics & Maths Tutor',desc:'ti aiuta a studiare matematica, fisica, chimica, biologia, economia, geografia, inglese.',cat:'studio'},
+  {url:'https://www.studypool.com/',title:'Studypool',desc:'puoi guadagnare soldi vendendo appunti o cercare chiarimenti.',cat:'studio'},
+  {url:'https://mindgrasp.ai/',title:'Mindgrasp',desc:'fa riassunti ai video e altro.',cat:'studio'},
+  {url:'https://www.genei.io/',title:'Genei',desc:'utile per fare ricerche, serve login e sono 14 giorni di prova.',cat:'studio'},
+  {url:'https://thistudy.com/',title:'Thistudy',desc:'dà risposte ai test e aiuta a studiare.',cat:'studio'},
+  {url:'https://www.smart.servier.com/',title:'Smart Servier',desc:'immagini davvero carine per studiare medicina.',cat:'studio'},
+  {url:'https://genius.ly/it/',title:'Genially',desc:'per creare presentazioni interattive (serve iscrizione).',cat:'studio'},
+  {url:'https://www.chegg.com/',title:'Chegg',desc:'per fare flashcard e altro, serve il login, forse a pagamento.',cat:'studio'},
+  {url:'https://slidesgo.com/',title:'Slidesgo',desc:'molto carino per fare presentazioni belle se sei stufa di PowerPoint.',cat:'studio'},
+  {url:'https://placeit.net/',title:'Placeit',desc:'per fare mockup.',cat:'studio'},
+  {url:'https://prontowriter.com/',title:'Pronto Writer',desc:'assistente per scrivere saggi.',cat:'studio'},
+
+  // PROGRAMMAZIONE
+  {url:'https://exercism.org/',title:'Exercism',desc:'scegli un linguaggio di programmazione e ti dà materiale, spiegazioni ed esercizi.',cat:'codice'},
+  {url:'https://www.w3schools.com/',title:'W3Schools',desc:'per esercitarsi con linguaggi di programmazione.',cat:'codice'},
+  {url:'https://www.dataquest.io/',title:'Dataquest',desc:'corsi di programmazione anche gratuiti.',cat:'codice'},
+  {url:'https://www.freecodecamp.org/',title:'freeCodeCamp',desc:'imparare a programmare gratis.',cat:'codice'},
+  {url:'https://www.codecademy.com/',title:'Codecademy',desc:'per fare corsi anche gratuiti di programmazione.',cat:'codice'},
+  {url:'https://www.udemy.com/it/',title:'Udemy',desc:'si possono fare corsi anche gratis.',cat:'codice'},
+  {url:'https://www.edx.org/',title:'edX',desc:'si possono fare corsi anche gratuiti.',cat:'codice'},
+  {url:'https://codewith.it/',title:'Codewith',desc:'imparare a programmare.',cat:'codice'},
+  {url:'https://www.pluralsight.com/',title:'Pluralsight',desc:'corsi tecnici.',cat:'codice'},
+  {url:'https://www.sololearn.com/',title:'SoloLearn',desc:'imparare a programmare.',cat:'codice'},
+  {url:'https://www.udacity.com/',title:'Udacity',desc:'corsi tecnici online.',cat:'codice'},
+  {url:'https://try2hack.me/',title:'Try2Hack',desc:'per imparare ad hackerare eticamente.',cat:'codice'},
+  {url:'https://www.hackthissite.org/',title:'Hack This Site',desc:'per imparare ad hackerare eticamente.',cat:'codice'},
+  {url:'https://tryhackme.com/',title:'TryHackMe',desc:'cybersecurity.',cat:'codice'},
+  {url:'https://www.hacksplaining.com/',title:'Hacksplaining',desc:'sito di hacking spiegato bene.',cat:'codice'},
+  {url:'https://digitaldefynd.com/',title:'Digital Defynd',desc:'sito dove fare corsi gratuiti con certificati da linkare su LinkedIn.',cat:'codice'},
+  {url:'https://www.useblackbox.io/',title:'Blackbox AI',desc:'intelligenza artificiale ti scrive i codici.',cat:'codice'},
+  {url:'https://ai.google/',title:'Google AI',desc:'impara sull\'intelligenza artificiale tramite Google.',cat:'codice'},
+  {url:'https://www.programiz.com/',title:'Programiz',desc:'imparara a programmare gratuitamente.',cat:'codice'},
+  {url:'https://www.engineeringtoolbox.com/',title:'Engineering Toolbox',desc:'risorse, strumenti e informazioni per l\'ingegneria.',cat:'codice'},
+  {url:'https://gridzzly.com/',title:'Gridzzly',desc:'crea carta a griglia, righe, esagoni, pentagramma.',cat:'codice'},
+
+  // MEDIA
+  {url:'https://www.nicktv.it/',title:'NickTV',desc:'contenuti Nickelodeon.',cat:'media'},
+  {url:'https://documentaryheaven.com/',title:'Documentary Heaven',desc:'documentari gratis su qualsiasi argomento.',cat:'media'},
+  {url:'https://www.cornel1801.com/disney/movies.html',title:'Disney Movies',desc:'trivia e curiosità sui film Disney.',cat:'media'},
+  {url:'https://zerodollarmovies.com/',title:'Zero Dollar Movies',desc:'film da guardare gratis.',cat:'media'},
+  {url:'http://www.snesfun.com/',title:'SNES Fun',desc:'giochi vintage da Batman a Super Mario.',cat:'media'},
+  {url:'https://animelon.com/',title:'Animelon',desc:'per guardare anime con sottotitoli.',cat:'media'},
+  {url:'https://www.kast.gg/',title:'Kast',desc:'per guardare film o serie con gli amici a distanza.',cat:'media'},
+  {url:'https://scener.com/',title:'Scener',desc:'per guardare film con amici a distanza.',cat:'media'},
+  {url:'https://rabbitmovies.app/',title:'Rabbit Movies',desc:'si possono vedere film strani.',cat:'media'},
+  {url:'https://reelgood.com/roulette/netflix',title:'Reelgood Roulette',desc:'trova cose random da vedere su Netflix.',cat:'media'},
+  {url:'https://archive.org/details/consolelivingroom',title:'Internet Archive Console',desc:'tecnicamente ti fa giocare giochi vintage, non sono sicura funzioni davvero però.',cat:'media'},
+
+  // MUSICA
+  {url:'https://www.midomi.com/',title:'Midomi',desc:'canticchia una melodia, lui trova la canzone.',cat:'musica'},
+  {url:'https://justinguitar.com/',title:'Justin Guitar',desc:'centinaia di lezioni di chitarra gratuite con audio e video.',cat:'musica'},
+  {url:'https://www.drumlessons.com/',title:'Drum Lessons',desc:'risorsa online per batteristi di tutti i livelli.',cat:'musica'},
+  {url:'https://www.zebrakeys.com/',title:'Zebra Keys',desc:'50 lezioni di piano a varie difficoltà.',cat:'musica'},
+  {url:'http://pianopractice.org/',title:'Piano Practice',desc:'PDF online con i fondamenti della pratica del pianoforte.',cat:'musica'},
+  {url:'https://www.ukuleleunderground.com/',title:'Ukulele Underground',desc:'video tutorial di come si suona l\'ukulele.',cat:'musica'},
+  {url:'https://ukulelehunt.com/',title:'Ukulele Hunt',desc:'blog, lezioni, ebook e altro sull\'ukulele.',cat:'musica'},
+  {url:'https://www.violinonline.com/',title:'Violin Online',desc:'informazioni sul violino e istruzioni su come suonarlo.',cat:'musica'},
+
+  // LINGUE
+  {url:'https://www.rosettastone.com/',title:'Rosetta Stone',desc:'metodo immersivo per imparare le lingue.',cat:'lingue'},
+  {url:'https://www.memrise.com/it',title:'Memrise',desc:'flashcard e gamification per le lingue.',cat:'lingue'},
+
+  // GIOCHI
+  {url:'https://www.silvergames.com/en/flip-diving',title:'Flip Diving',desc:'tuffati nel modo più spettacolare.',cat:'giochi'},
+  {url:'https://www.silvergames.com/en/bottle-flip',title:'Bottle Flip',desc:'fai il bottle flip. impossibile smettere.',cat:'giochi'},
+  {url:'https://playcanv.as/p/y3ZFwtwW/',title:'Car Game',desc:'gioco di guida nel browser.',cat:'giochi'},
+  {url:'https://www.kongregate.com/',title:'Kongregate',desc:'giochi browser per passare il tempo.',cat:'giochi'},
+
+  // LAVORO
+  {url:'https://it.indeed.com/',title:'Indeed',desc:'il sito di ricerca lavoro numero uno al mondo.',cat:'lavoro'},
+  {url:'https://www.linkedin.com/',title:'LinkedIn',desc:'social network per la tua carriera.',cat:'lavoro'},
+  {url:'https://www.glassdoor.com/',title:'Glassdoor',desc:'scopri come le compagnie trattano i loro impiegati.',cat:'lavoro'},
+  {url:'https://thepminterview.com/',title:'The PM Interview',desc:'pratica domande per i colloqui.',cat:'lavoro'},
+  {url:'http://www.freeyourresume.com/',title:'Free Your Resume',desc:'template di CV gratuiti.',cat:'lavoro'},
+  {url:'https://www.jobscan.co/',title:'Jobscan',desc:'analizza quanto il tuo CV sia compatibile con la descrizione del lavoro.',cat:'lavoro'},
+  {url:'https://www.workingnomads.com/',title:'Working Nomads',desc:'lista di lavori da fare da remoto.',cat:'lavoro'},
+  {url:'https://www.upwork.com/',title:'Upwork',desc:'se non trovi lavoro, potresti trovare cose freelance.',cat:'lavoro'},
+  {url:'https://sidehustlestack.co/',title:'Side Hustle Stack',desc:'trova varie opportunità di reddito differenti.',cat:'lavoro'},
+  {url:'https://ripplematch.com/',title:'Ripple Match',desc:'per trovare lavoro credo.',cat:'lavoro'},
+  {url:'https://www.themuse.com/',title:'The Muse',desc:'per trovare lavoro credo.',cat:'lavoro'},
+  {url:'https://www.theforage.com/',title:'The Forage',desc:'per fare corsi basati sulle aziende dove vorrai andare a lavorare.',cat:'lavoro'},
+  {url:'https://www.workaway.info/',title:'Workaway',desc:'per viaggiare e lavorare all\'estero.',cat:'lavoro'},
+  {url:'https://www.wwoof.it/',title:'WWOOF',desc:'per viaggiare e lavorare all\'estero.',cat:'lavoro'},
+  {url:'https://www.couchsurfing.com/',title:'CouchSurfing',desc:'ospitalità dagli abitanti del posto.',cat:'lavoro'},
+  {url:'https://hackaday.com/',title:'Hackaday',desc:'per imparare ad hackerare eticamente.',cat:'lavoro'},
+
+  // BENESSERE
+  {url:'https://www.myfitnesspal.com/',title:'MyFitnessPal',desc:'conta calorie e traccia la dieta.',cat:'benessere'},
+  {url:'https://www.fitday.com/',title:'FitDay',desc:'traccia peso, dieta e attività fisica.',cat:'benessere'},
+  {url:'https://sleepopolis.com/calculators/sleep/',title:'Sleep Calculator',desc:'pianifica il tuo programma di sonno meglio.',cat:'benessere'},
+  {url:'https://www.calorieking.com/',title:'Calorie King',desc:'trova informazioni nutrizionali sui vari cibi.',cat:'benessere'},
+  {url:'https://www.eatthismuch.com/',title:'Eat This Much',desc:'crea pasti con i tuoi target nutrizionali.',cat:'benessere'},
+  {url:'https://www.musely.com/',title:'Musely',desc:'sito di skincare.',cat:'benessere'},
+  {url:'https://www.physicsandmathstutor.com/',title:'PMT',desc:'studio concentrato e bilanciato.',cat:'benessere'},
+
+  // VIAGGI
+  {url:'https://www.tripit.com/web',title:'TripIt',desc:'organizza ogni viaggio in un unico itinerario.',cat:'viaggi'},
+  {url:'https://www.skyscanner.net/',title:'Skyscanner',desc:'compara voli su tutte le compagnie.',cat:'viaggi'},
+  {url:'https://www.hostelworld.com/',title:'Hostelworld',desc:'prenota ostelli in tutto il mondo.',cat:'viaggi'},
+  {url:'https://roadtrippers.com/',title:'Roadtrippers',desc:'pianifica il tuo tragitto con le migliori attrazioni (solo USA).',cat:'viaggi'},
+  {url:'https://www.padmapper.com/',title:'PadMapper',desc:'mappa possibili appartamenti che vanno bene coi tuoi criteri.',cat:'viaggi'},
+  {url:'https://www.zillow.com/',title:'Zillow',desc:'un\'altra fonte dove trovare la tua prossima casa.',cat:'viaggi'},
+  {url:'https://pintsinthesun.co.uk/',title:'Pints in the Sun',desc:'trova dove bere una pinta all\'aperto in UK.',cat:'viaggi'},
+
+  // CASA & VITA
+  {url:'https://home.by.me/en/',title:'Homebyme',desc:'piattaforma online di interior design per sviluppare il tuo progetto di casa in 3D.',cat:'casa'},
+  {url:'http://www.planyourroom.com/',title:'Plan Your Room',desc:'pianifica le stanze della tua casa.',cat:'casa'},
+  {url:'https://www.homestyler.com/',title:'Homestyler',desc:'disegna/progetta la tua casa dei sogni.',cat:'casa'},
+  {url:'https://mint.intuit.com/',title:'Mint',desc:'per tenere d\'occhio i propri soldi.',cat:'casa'},
+  {url:'https://www.deadmansswitch.net/',title:'Dead Man\'s Switch',desc:'email da mandare dopo la morte.',cat:'casa'},
+  {url:'https://www.keybr.com/',title:'Keybr',desc:'dattilografia.',cat:'casa'},
+  {url:'https://duckduckgo.com/',title:'DuckDuckGo',desc:'un motore di ricerca che non ti segue.',cat:'casa'},
+
+  // RELAZIONI & SOCIAL SKILLS
+  {url:'https://www.improveyoursocialskills.com/',title:'Improve Your Social Skills',desc:'guida comprensiva di social skills, ci si può iscrivere gratuitamente alla newsletter.',cat:'social'},
+  {url:'https://sociableintrovert.com/',title:'Sociable Introvert',desc:'usa i tuoi tratti introversi ed estroversi insieme.',cat:'social'},
+  {url:'https://socialself.com/',title:'Social Self',desc:'scopri esattamente come avere gli amici che vuoi.',cat:'social'},
+  {url:'https://www.peopleskillsdecoded.com/',title:'People Skills Decoded',desc:'sviluppa le tue conversazioni sulle tue forze naturali.',cat:'social'},
+  {url:'https://www.nicknotas.com/',title:'Nick Notas',desc:'diventa sicuro di te ed espandi il circolo sociale.',cat:'social'},
+  {url:'https://attemptedliving.com/',title:'Attempted Living',desc:'impara come funzionano le relazioni.',cat:'social'},
+
+  // GENEALOGIA
+  {url:'https://www.familysearch.org/',title:'Family Search',desc:'il database genealogico più grande del mondo.',cat:'genealogia'},
+  {url:'https://it.findagrave.com/',title:'Find a Grave',desc:'ricerca genealogica su milioni di cimiteri.',cat:'genealogia'},
+  {url:'https://chroniclingamerica.loc.gov/',title:'Chronicling America',desc:'giornali storici americani digitalizzati.',cat:'genealogia'},
+  {url:'https://www.cyndislist.com/',title:'Cyndi\'s List',desc:'la lista definitiva di risorse per genealogisti.',cat:'genealogia'},
+  {url:'https://welcome.storyworth.com/',title:'Storyworth',desc:'raccogli le storie della tua famiglia in un libro.',cat:'genealogia'},
+  {url:'https://www.familytreemagazine.com/',title:'Family Tree Magazine',desc:'magazine di genealogia.',cat:'genealogia'},
+
+  // ESTENSIONI CHROME
+  {url:'https://getadblock.com/',title:'Adblock',desc:'blocca le pubblicità. indispensabile.',cat:'estensioni'},
+  {url:'https://www.instapaper.com/',title:'Instapaper',desc:'webclipper per salvare articoli da leggere dopo.',cat:'estensioni'},
+  {url:'https://chrome.google.com/webstore/detail/picture-in-picture/hkgfoiooedgoejojocmhlaklaeopbecg',title:'Picture in Picture',desc:'utile per riunioni virtuali, YouTube e multitasking.',cat:'estensioni'},
+  {url:'https://chrome.google.com/webstore/detail/turn-off-the-lights/bfbmjmiodbnnpllbbbfblcplfjjepjdn',title:'Turn Off the Lights',desc:'mette in focus e scurisce tutto tranne il video.',cat:'estensioni'},
+  {url:'https://www.mybib.com/',title:'MyBib',desc:'generatore di citazioni bibliografiche gratuito.',cat:'estensioni'},
+  {url:'https://chrome.google.com/webstore/detail/pomegranate/dafgdjggglmdgomeglokhmhpkkddmklo',title:'Pomegranate',desc:'timer pomodoro e blocco siti.',cat:'estensioni'},
+  {url:'https://chrome.google.com/webstore/detail/save-to-notion/ldmmifpegigmeammaeckplhnjbbpccmm',title:'Save to Notion',desc:'webclipper per salvare pagine direttamente in Notion.',cat:'estensioni'},
+  {url:'https://catadoo.co/',title:'Catadoo',desc:'todo list gamificata.',cat:'estensioni'},
+  {url:'https://www.colorzilla.com/',title:'ColorZilla',desc:'color picker dal browser.',cat:'estensioni'},
+  {url:'https://www.grammarly.com/',title:'Grammarly',desc:'assistente AI per scrivere meglio in inglese.',cat:'estensioni'},
+  {url:'https://getgofullpage.com/',title:'GoFullPage',desc:'screenshot di pagine intere.',cat:'estensioni'},
+  {url:'https://jointoucan.com/',title:'Toucan',desc:'immersione linguistica mentre navighi.',cat:'estensioni'},
+  {url:'https://inkah.com/',title:'Inkah',desc:'utile se stai imparando coreano o cinese, dà traduzioni rapide.',cat:'estensioni'},
+  {url:'https://translate.google.com/',title:'Google Translate',desc:'utile per traduzioni rapide.',cat:'estensioni'},
+  {url:'https://www.worldwide.fm/',title:'Worldwide Radio',desc:'radio da tutto il mondo, ottimo per l\'immersione linguistica.',cat:'estensioni'},
+  {url:'https://reverso.net/',title:'Reverso',desc:'super utile per il francese e altre lingue.',cat:'estensioni'},
+  {url:'https://www.notion-enhancer.github.io/',title:'Notion Enhancer',desc:'personalizzatore all-in-one per Notion.',cat:'estensioni'},
+  {url:'https://darkreader.org/',title:'Dark Reader',desc:'dark mode per qualsiasi sito.',cat:'estensioni'},
+  {url:'https://www.beelinereader.com/',title:'Beeline Reader',desc:'colora il testo per aiutarti a leggere più veloce.',cat:'estensioni'},
+
+  // APP MOBILE
+  {url:'https://www.shazam.com/',title:'Shazam',desc:'riconosce qualsiasi canzone in pochi secondi. funziona anche col tuo stesso canto (più o meno).',cat:'app'},
+  {url:'https://calendar.google.com/',title:'Google Calendar',desc:'la migliore app in assoluto secondo chi l\'ha usata. 100% gratuita.',cat:'app'},
+  {url:'https://structured.app/',title:'Structured',desc:'app di scheduling molto bella esteticamente e completa.',cat:'app'},
+  {url:'https://www.tappy.app/',title:'Tappy',desc:'super divertente quando ti senti ansiosa. altamente consigliata.',cat:'app'},
+  {url:'https://www.instapaper.com/',title:'Instapaper',desc:'salva articoli, YouTube e reel per leggerli dopo. gratuita.',cat:'app'},
+  {url:'https://www.headspace.com/',title:'Headspace',desc:'app di meditazione, per lo più a pagamento.',cat:'app'},
+  {url:'https://www.wildjourneyapp.com/',title:'Wild Journey',desc:'app immersiva e rilassante.',cat:'app'},
+  {url:'https://howwefeel.org/',title:'How We Feel',desc:'100% gratuita, ti aiuta a loggare emozioni e sentimenti. amata.',cat:'app'},
+  {url:'https://www.volv.app/',title:'Volv',desc:'aggregatore di notizie da tutto il web, stile instagram.',cat:'app'},
+  {url:'https://jotify.app/',title:'Jotify',desc:'app carina per prendere note.',cat:'app'},
+  {url:'https://www.goodnotes.com/',title:'Goodnotes',desc:'sync su tutte le piattaforme, si possono caricare PDF da qualsiasi dispositivo.',cat:'app'},
+  {url:'https://papago.naver.com/',title:'Papago',desc:'traduttore perfetto per coreano-inglese, con registro formale e informale.',cat:'app'},
+  {url:'https://www.goodreads.com/',title:'Goodreads',desc:'leggi recensioni per decidere il prossimo libro.',cat:'app'},
+  {url:'https://www.pinterest.com/',title:'Pinterest',desc:'il posto migliore dove pinnare i tuoi interessi.',cat:'app'},
+  {url:'https://www.vsco.co/',title:'VSCO',desc:'editing foto con filtri bellissimi.',cat:'app'},
+  {url:'https://www.fimo.app/',title:'FIMO',desc:'app di fotografia stile pellicola, usata da anni.',cat:'app'},
+  {url:'https://www.inshot.com/',title:'InShot',desc:'miglior app di video editing mobile. versione gratuita buona.',cat:'app'},
+  {url:'https://www.lightroom.adobe.com/',title:'Lightroom',desc:'miglior app di editing foto. trasforma davvero le foto.',cat:'app'},
+  {url:'https://snapseed.com/',title:'Snapseed',desc:'editing foto gratuito di qualità.',cat:'app'},
+  {url:'https://duolingo.com/',title:'Duolingo',desc:'imparare le lingue in modo gamificato.',cat:'app'},
+  {url:'https://www.toogoode.com/',title:'Too Good to Go',desc:'scopri ristoranti e negozi con cibo invenduto a prezzi ridotti.',cat:'app'},
+  {url:'https://www.splitwise.com/',title:'Splitwise',desc:'traccia e dividi le spese con gli amici.',cat:'app'},
+  {url:'https://revolt.chat/',title:'Revolut',desc:'banking personale.',cat:'app'},
+  {url:'https://www.readwise.io/',title:'Readwise',desc:'rivedi i tuoi highlight Kindle.',cat:'app'},
+  {url:'https://readwise.io/read',title:'Readwise Reader',desc:'app read-it-later, leggi blog e PDF.',cat:'app'},
+
+  // AMBIENT & LOFI
+  {url:'https://imissmycafe.com/',title:'I Miss My Cafe',desc:'suoni di caffetteria in loop. perfetti per studiare.',cat:'ambient'},
+  {url:'https://www.lofi.cafe/',title:'Lofi Cafe',desc:'la preferita in assoluto. una radio lofi con ambienti visivi.',cat:'ambient'},
+  {url:'https://open.spotify.com/',title:'Spotify',desc:'la base. playlist di ogni tipo.',cat:'ambient'},
+  {url:'https://pomofocus.io/',title:'Pomofocus',desc:'timer pomodoro estetico e funzionale.',cat:'ambient'},
+  {url:'https://studywithme.io/aesthetic-pomodoro-timer/',title:'Study With Me',desc:'pomodoro estetico con ambienti virtuali.',cat:'ambient'},
+  {url:'https://simplynoise.com/',title:'Simply Noise',desc:'rumore bianco, rosa o marrone per concentrarsi.',cat:'ambient'},
+  {url:'https://www.noisli.com/',title:'Noisli',desc:'mix di suoni ambientali personalizzabili.',cat:'ambient'},
+  {url:'https://asoftmurmur.com/',title:'A Soft Murmur',desc:'mix di suoni ambientali: pioggia, fuoco, onde.',cat:'ambient'},
+  {url:'https://www.soundrown.com/',title:'Soundrown',desc:'suoni rilassanti per lavorare o studiare.',cat:'ambient'},
+
+  // PSICOLOGIA & MENTE
+  {url:'https://www.psychologytoday.com/',title:'Psychology Today',desc:'articoli di psicologia accessibili e ben scritti.',cat:'psico'},
+  {url:'https://www.blahtherapy.com/',title:'Blah Therapy',desc:'parla dei tuoi problemi con uno sconosciuto anonimo.',cat:'psico'},
+  {url:'https://www.authentichappiness.sas.upenn.edu/',title:'Authentic Happiness',desc:'questionario universitario per scoprire i tuoi punti di forza.',cat:'psico'},
+  {url:'https://www.improveyoursocialskills.com/',title:'Improve Your Social Skills',desc:'guida comprensiva di social skills.',cat:'psico'},
+  {url:'https://howwefeel.org/',title:'How We Feel',desc:'app per loggare emozioni e riconoscerle meglio.',cat:'psico'},
+  {url:'https://www.statueofliberty.org/',title:'Statue of Liberty',desc:'storia e curiosità sulla statua della libertà.',cat:'psico'},
+
+  // GAMEDEV & TOOLS EXTRA
+  {url:'https://www.reddit.com/r/gamedev/',title:'r/gamedev',desc:'subreddit per chi sviluppa giochi. design, programmazione, community.',cat:'codice'},
+  {url:'https://minecraft.fandom.com/wiki/Minecraft_Wiki',title:'Minecraft Wiki',desc:'la wiki ufficiale di Minecraft.',cat:'giochi'},
+  {url:'https://tinyurl.com/app',title:'TinyURL',desc:'accorcia URL lunghi in link condivisibili.',cat:'utili'},
+  {url:'https://fast.com/',title:'Fast.com',desc:'test velocità internet istantaneo di Netflix.',cat:'utili'},
+
+  // DA APPROFONDIRE / STORIA & CURIOSITÀ
+  {url:'https://www.worldhistory.org/',title:'World History Encyclopedia',desc:'enciclopedia di storia antica gratuita e accurata. ottima per approfondire.',cat:'scoperte'},
+  {url:'https://dinosaurpictures.org/ancient-earth',title:'Ancient Earth Globe',desc:'come era la Terra milioni di anni fa. ipnotico e istruttivo.',cat:'scoperte'},
+  {url:'https://scaleofuniverse.com/en',title:'Scale of the Universe',desc:'visualizza la scala di tutto, dall\'infinitamente piccolo all\'infinitamente grande.',cat:'scoperte'},
+  {url:'https://bibleproject.com/',title:'Bible Project',desc:'video animati gratuiti che spiegano la Bibbia in modo accessibile.',cat:'scoperte'},
+  {url:'https://iep.utm.edu/',title:'Internet Encyclopedia of Philosophy',desc:'enciclopedia di filosofia peer-reviewed gratuita.',cat:'studio'},
+  {url:'https://ground.news/',title:'Ground News',desc:'confronta come diverse testate coprono la stessa notizia. ottimo per il fact-checking.',cat:'utili'},
+
+  // CODICE EXTRA
+  {url:'https://www.sqlzoo.net/wiki/SQL_Tutorial',title:'SQLZoo',desc:'impara SQL con esercizi interattivi.',cat:'codice'},
+  {url:'https://nosqlzoo.net/wiki/Main_Page',title:'NoSQLZoo',desc:'come SQLZoo ma per database NoSQL.',cat:'codice'},
+  {url:'https://realpython.com/',title:'Real Python',desc:'tutorial Python di alta qualità, dai fondamentali agli argomenti avanzati.',cat:'codice'},
+  {url:'https://roadmap.sh/',title:'Roadmap.sh',desc:'mappe di apprendimento per qualsiasi ruolo tech: frontend, backend, DevOps.',cat:'codice'},
+  {url:'https://hackr.io/',title:'Hackr.io',desc:'trova i migliori corsi online per qualsiasi linguaggio o tecnologia.',cat:'codice'},
+  {url:'https://cult.honeypot.io/',title:'Honeypot Cult',desc:'articoli e risorse per sviluppatori.',cat:'codice'},
+  {url:'https://blog.levelupcoding.com/',title:'Level Up Coding',desc:'articoli chiari su concetti di programmazione e system design.',cat:'codice'},
+  {url:'https://www.postman.com/',title:'Postman',desc:'strumento per testare API. standard del settore.',cat:'codice'},
+  {url:'https://muted.io/cheat-sheet/',title:'Muted.io Cheat Sheet',desc:'cheat sheet musicale interattivo per teoria della musica.',cat:'musica'},
+  {url:'https://css3generator.com/',title:'CSS3 Generator',desc:'genera codice CSS per effetti visivi senza doverlo scrivere a mano.',cat:'codice'},
+  {url:'https://www.accessibility-developer-guide.com/',title:'Accessibility Developer Guide',desc:'guida completa per sviluppatori sull\'accessibilità web.',cat:'codice'},
+  {url:'https://web.dev/learn/accessibility/',title:'web.dev Accessibility',desc:'corso gratuito Google sull\'accessibilità web.',cat:'codice'},
+
+  // DESIGN EXTRA
+  {url:'https://www.threedee.design/',title:'Threedee Design',desc:'risorse 3D per designer.',cat:'design'},
+  {url:'https://www.videvo.net/',title:'Videvo',desc:'video stock gratuiti e a pagamento.',cat:'design'},
+  {url:'https://musho.ai/',title:'Musho AI',desc:'plugin Figma/FigJam che genera UI con AI.',cat:'design'},
+  {url:'https://www.visily.ai/',title:'Visily',desc:'crea wireframe e mockup con AI.',cat:'design'},
+  {url:'https://geniusui.carrd.co/',title:'Genius UI',desc:'raccolta di risorse UI.',cat:'design'},
+  {url:'https://www.relume.io/',title:'Relume',desc:'libreria di componenti e sitemap per Webflow e Figma.',cat:'design'},
+  {url:'https://www.digitalsamaritan.co/',title:'Digital Samaritan',desc:'raccolta curata di tool AI per designer e developer.',cat:'design'},
+  {url:'https://www.uidesign.tips/',title:'UI Design Tips',desc:'tips pratici di UI design in formato visivo.',cat:'design'},
+  {url:'https://previewed.app/',title:'Previewed',desc:'crea mockup di app in 3D nel browser.',cat:'design'},
+  {url:'https://theapplaunchpad.com/',title:'The App Launchpad',desc:'per fare mockup di app.',cat:'design'},
+  {url:'https://www.theartscavenger.com/',title:'The Arts Scavenger',desc:'collage sheets e risorse vintage per collage e scrapbooking.',cat:'design'},
+  {url:'https://online-audio-converter.com/it/',title:'Online Audio Converter',desc:'converti file audio in qualsiasi formato.',cat:'utili'},
+  {url:'https://twittervideodownloader.com/',title:'Twitter Video Downloader',desc:'scarica video da Twitter/X.',cat:'utili'},
+
+  // APPRENDIMENTO AI & TECH
+  {url:'https://www.deeplearning.ai/',title:'DeepLearning.AI',desc:'corsi di AI e ML di Andrew Ng. i migliori in circolazione.',cat:'codice'},
+  {url:'https://huggingface.co/learn',title:'HuggingFace Learn',desc:'corsi gratuiti su LLM, agenti AI e machine learning.',cat:'codice'},
+  {url:'https://online.stanford.edu/courses/cs221-artificial-intelligence-principles-and-techniques',title:'Stanford CS221',desc:'corso universitario Stanford sull\'AI, gratuito online.',cat:'codice'},
+  {url:'https://skillbuilder.aws/',title:'AWS Skill Builder',desc:'corsi ufficiali AWS, molti gratuiti.',cat:'codice'},
+  {url:'https://grow.google/ai',title:'Google AI Learning',desc:'percorsi di apprendimento sull\'AI da Google.',cat:'codice'},
+  {url:'https://www.nvidia.com/en-us/training/',title:'NVIDIA Training',desc:'corsi su GPU computing e AI da NVIDIA.',cat:'codice'},
+  {url:'https://huggingface.co/learn/agents-course/',title:'HuggingFace Agents Course',desc:'corso gratuito sugli agenti AI.',cat:'codice'},
+
+  // FILM E MEDIA EXTRA
+  {url:'https://asianacircus.com/best-movies-set-in-italy-to-watch-before-visiting/',title:'Film Ambientati in Italia',desc:'lista di film da guardare prima di visitare l\'Italia.',cat:'media'},
+  {url:'https://screenrant.com/netflix-wholesome-cottagecore-movies/',title:'Cottagecore Movies Netflix',desc:'film wholesome e cottagecore su Netflix.',cat:'media'},
+  {url:'https://artandtheology.org/',title:'Art & Theology',desc:'blog che esplora l\'intersezione tra arte, musica e fede.',cat:'media'},
+
+  // RISORSE GRAFICHE & EXTRA
+  {url:'https://www.freepik.com/',title:'Freepik',desc:'risorse grafiche, illustrazioni e template gratuiti.',cat:'design'},
+  {url:'https://giphy.com/',title:'Giphy',desc:'la libreria di gif più grande del mondo.',cat:'design'},
+  {url:'https://www.softicons.com/designers/raindropmemory',title:'Raindrop Memory Icons',desc:'icone carine da aggiungere a siti e Notion.',cat:'design'},
+  {url:'https://witeboard.com/',title:'Witeboard',desc:'lavagna collaborativa online.',cat:'utili'},
+  {url:'https://screenrant.com/',title:'Screen Rant',desc:'notizie, recensioni e trailer di film e serie TV.',cat:'media'},
+  {url:'http://loveletterstooldhollywood.blogspot.com/',title:'Love Letters to Old Hollywood',desc:'blog sul vecchio Hollywood, da leggere se vuoi essere Jessica Fletcher.',cat:'media'},
+  {url:'https://www.badtaste.it/',title:'Bad Taste',desc:'cinema e cultura pop italiana.',cat:'media'},
+];
+const GIST_ID='d65362d723fde915981ca49221372caf';
+const GIST_FILE='archivio.json';
+
+let sites=[];
+let activeTag='tutti';
+let openCats=new Set();
+let favorites=new Set();
+let favOpen=true;
+let ghToken=localStorage.getItem('gh_token')||'';
+let saveTimer=null;
+
+function domain(u){try{return new URL(u).hostname.replace('www.','')}catch{return u}}
+function fav(u){try{return'https://www.google.com/s2/favicons?domain='+new URL(u).hostname+'&sz=32'}catch{return''}}
+
+function setStatus(msg,cls){
+  var el=document.getElementById('sync-status');
+  el.textContent=msg;
+  el.className='sync-status '+(cls||'');
+}
+
+function showTokenPanel(){document.getElementById('token-overlay').classList.add('open');}
+function closeTokenPanel(){document.getElementById('token-overlay').classList.remove('open');}
+function saveToken(){
+  var t=document.getElementById('token-input').value.trim();
+  if(!t)return;
+  ghToken=t;
+  localStorage.setItem('gh_token',t);
+  closeTokenPanel();
+  saveToGist();
+}
+
+async function loadFromGist(){
+  setStatus('caricamento…','loading');
+  try{
+    var r=await fetch('https://api.github.com/gists/'+GIST_ID,{
+      headers:ghToken?{'Authorization':'token '+ghToken}:{}
+    });
+    if(!r.ok)throw new Error(r.status);
+    var data=await r.json();
+    var content=data.files[GIST_FILE]&&data.files[GIST_FILE].content;
+    var parsed=content?JSON.parse(content):[];
+    sites=parsed.length?parsed:SEED_SITES.slice();
+    if(!parsed.length&&SEED_SITES.length)saveToGist();
+    setStatus('','');
+  }catch(e){
+    sites=SEED_SITES.slice();
+    setStatus('offline — modifiche non salvate','error');
+  }
+  render();
+}
+
+async function saveToGist(){
+  if(!ghToken){showTokenPanel();return;}
+  setStatus('salvataggio…','loading');
+  try{
+    var body={files:{}};
+    body.files[GIST_FILE]={content:JSON.stringify(sites,null,2)};
+    var r=await fetch('https://api.github.com/gists/'+GIST_ID,{
+      method:'PATCH',
+      headers:{'Authorization':'token '+ghToken,'Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+    if(r.status===401){ghToken='';localStorage.removeItem('gh_token');showTokenPanel();return;}
+    if(!r.ok)throw new Error(r.status);
+    setStatus('✓ salvato','ok');
+    setTimeout(function(){setStatus('','');},2500);
+  }catch(e){
+    setStatus('errore salvataggio','error');
+  }
+}
+
+function scheduleSave(){
+  if(saveTimer)clearTimeout(saveTimer);
+  saveTimer=setTimeout(saveToGist,800);
+}
+
+function toggleFav(idx){
+  var url=sites[idx].url;
+  if(favorites.has(url))favorites.delete(url);
+  else favorites.add(url);
+  render();
+}
+
+var _pendingRemoveIdx=null;
+function removeSite(idx){
+  var site=sites[idx];
+  if(!site)return;
+  _pendingRemoveIdx=idx;
+  document.getElementById('modal-msg').textContent='Rimuovere “'+site.title+'” dall’archivio?';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function modalClose(){
+  _pendingRemoveIdx=null;
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+function modalConfirm(){
+  if(_pendingRemoveIdx===null)return;
+  var site=sites[_pendingRemoveIdx];
+  if(site)favorites.delete(site.url);
+  sites.splice(_pendingRemoveIdx,1);
+  _pendingRemoveIdx=null;
+  document.getElementById('modal-overlay').classList.remove('open');
+  render();
+  scheduleSave();
+}
+
+function toggleCat(id){
+  if(openCats.has(id))openCats.delete(id);
+  else openCats.add(id);
+  render();
+}
+
+function render(){
+  const q=(document.getElementById('search').value||'').toLowerCase().trim();
+  const sel=document.getElementById('f-cat');
+  if(sel&&sel.options.length<=1)CATS.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.icon+' '+c.label;sel.appendChild(o);});
+
+  renderTagFilters();
+
+  const filtered=sites.filter(s=>{
+    const matchTag=activeTag==='tutti'||s.cat===activeTag;
+    const matchQ=!q||s.title.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q)||domain(s.url).includes(q);
+    return matchTag&&matchQ;
+  });
+
+  if(q||activeTag!=='tutti'){
+    document.getElementById('search-count').textContent=filtered.length+(q?' risultati per "'+q+'"':' siti in questa categoria');
+    document.getElementById('acc-list').innerHTML=filtered.length
+      ?'<div class="site-list results-wrap">'+filtered.map(s=>rowHTML(s,sites.indexOf(s))).join('')+'</div>'
+      :'<p style="color:var(--ink4);font-style:italic;font-size:14px;padding:1rem 0">nessun reperto trovato in archivio.</p>';
+    return;
+  }
+
+  document.getElementById('search-count').textContent=sites.length+' reperti catalogati';
+  const favSites=sites.filter(s=>favorites.has(s.url));
+  const favBlock=favSites.length
+    ?'<div class="acc fav-acc">'+
+      '<div class="acc-head" onclick="favOpen=!favOpen;render()">'+
+        '<div class="acc-left">'+
+          '<span class="acc-icon">★</span>'+
+          '<span class="acc-title">preferiti</span>'+
+          '<span class="acc-sub">i tuoi reperti del cuore</span>'+
+        '</div>'+
+        '<div class="acc-right">'+
+          '<span class="acc-count">'+favSites.length+'</span>'+
+          '<span class="acc-chevron'+(favOpen?' open':'')+'">▼</span>'+
+        '</div>'+
+      '</div>'+
+      '<div class="acc-body'+(favOpen?' open':'')+'">'+
+        '<div class="site-list">'+favSites.map(s=>rowHTML(s,sites.indexOf(s))).join('')+'</div>'+
+      '</div>'+
+    '</div>'
+    :'';
+  document.getElementById('acc-list').innerHTML=favBlock+CATS.map(function(c){
+    const cs=sites.filter(s=>s.cat===c.id);
+    if(!cs.length)return'';
+    const open=openCats.has(c.id);
+    return'<div class="acc">'+
+      '<div class="acc-head" onclick="toggleCat(\''+c.id+'\')">' +
+        '<div class="acc-left">'+
+          '<span class="acc-icon">'+c.icon+'</span>'+
+          '<span class="acc-title">'+c.label+'</span>'+
+          '<span class="acc-sub">'+c.sub+'</span>'+
+        '</div>'+
+        '<div class="acc-right">'+
+          '<span class="acc-count">'+cs.length+'</span>'+
+          '<span class="acc-chevron'+(open?' open':'')+'">▼</span>'+
+        '</div>'+
+      '</div>'+
+      '<div class="acc-body'+(open?' open':'')+'">'+
+        '<div class="site-list">'+cs.map(s=>rowHTML(s,sites.indexOf(s))).join('')+'</div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function toggleAdd(){document.getElementById('add-panel').classList.toggle('open');}
+function addSite(){
+  var url=document.getElementById('f-url').value.trim();
+  var title=document.getElementById('f-title').value.trim();
+  var desc=document.getElementById('f-desc').value.trim();
+  var cat=document.getElementById('f-cat').value;
+  if(!url||!title||!cat)return;
+  sites.unshift({url:url,title:title,desc:desc||'',cat:cat});
+  ['f-url','f-title','f-desc'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('f-cat').value='';
+  toggleAdd();render();
+  scheduleSave();
+}
+loadFromGist();
+</script>
+</body>
+</html>
