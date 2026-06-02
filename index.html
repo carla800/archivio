@@ -774,6 +774,23 @@ function toggleCat(id){
 }
 
 
+
+function rowHTML(s,idx){
+  var cls=favorites.has(s.url)?'site-star starred':'site-star';
+  var tip=favorites.has(s.url)?'Rimuovi dai preferiti':'Aggiungi ai preferiti';
+  var star=favorites.has(s.url)?'★':'☆';
+  return'<div class="site-row">'+
+    '<img class="site-fav" src="'+fav(s.url)+'" onerror="this.style.display=\'none\'" alt="">'+
+    '<div class="site-info">'+
+      '<a class="site-title" href="'+s.url+'" target="_blank" rel="noopener">'+s.title+'</a>'+
+      '<span class="site-domain">'+domain(s.url)+'</span>'+
+      '<span class="site-desc">'+s.desc+'</span>'+
+    '</div>'+
+    '<button class="'+cls+'" onclick="toggleFav('+idx+')" title="'+tip+'">'+star+'</button>'+
+    '<button class="site-remove" onclick="removeSite('+idx+')" title="Rimuovi">✕</button>'+
+  '</div>';
+}
+
 function renderTagFilters(){
   var el=document.getElementById('tag-filters');
   if(!el)return;
